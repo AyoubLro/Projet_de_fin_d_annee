@@ -1,0 +1,166 @@
+{% extends "adminclub/base_admin.html" %}
+{% block title %}Gestion des Coachs - SportClub{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Gestion des Coachs</h2>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ajoutCoachModal">
+        <i class="fas fa-plus me-2"></i>Nouveau Coach
+    </button>
+</div>
+<!-- Barre de recherche -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="GET" class="row g-3">
+            <div class="col-md-4">
+                <input type="text" class="form-control" name="search" placeholder="Rechercher un coach..." value="{{ request.GET.search }}">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-search me-2"></i>Rechercher
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+<!-- Liste des coachs -->
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for coach in coachs %}
+                    <tr>
+                        <td>{{ coach.nom }}</td>
+                        <td>{{ coach.prenom }}</td>
+                        <td>{{ coach.email }}</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning" onclick="modifierCoach({{ coach.id }})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="supprimerCoach({{ coach.id }})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Modal Ajout Coach -->
+<div class="modal fade" id="ajoutCoachModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nouveau Coach</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" action="{% url 'admin_ajouter_coach' %}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="nom" name="nom" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="prenom" class="form-label">Prénom</label>
+                        <input type="text" class="form-control" id="prenom" name="prenom" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="motdepasse" class="form-label">Mot de passe</label>
+                        <input type="password" class="form-control" id="motdepasse" name="motdepasse" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal Modification Coach -->
+<div class="modal fade" id="modifierCoachModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modifier Coach</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" action="{% url 'admin_modifier_coach' %}">
+                {% csrf_token %}
+                <input type="hidden" id="coach_id" name="coach_id">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nom_modif" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="nom_modif" name="nom" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="prenom_modif" class="form-label">Prénom</label>
+                        <input type="text" class="form-control" id="prenom_modif" name="prenom" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email_modif" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email_modif" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="motdepasse_modif" class="form-label">Nouveau mot de passe (laisser vide pour ne pas changer)</label>
+                        <input type="password" class="form-control" id="motdepasse_modif" name="motdepasse">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    function modifierCoach(id) {
+        fetch('/adminclub/coach/' + id + '/')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('coach_id').value = id;
+                document.getElementById('nom_modif').value = data.nom;
+                document.getElementById('prenom_modif').value = data.prenom;
+                document.getElementById('email_modif').value = data.email;
+                new bootstrap.Modal(document.getElementById('modifierCoachModal')).show();
+            });
+    }
+    function supprimerCoach(id) {
+        if (confirm('Êtes-vous sûr de vouloir supprimer ce coach ?')) {
+            fetch('/adminclub/coach/' + id + '/supprimer/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            }).then(() => {
+                window.location.reload();
+            });
+        }
+    }
+</script>
+{% endblock %} 

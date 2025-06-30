@@ -1,0 +1,58 @@
+{% extends 'coach/base_coach.html' %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h2 class="h4 mb-0">
+                <i class="bi bi-file-earmark-text me-2"></i>
+                Liste des Documents
+            </h2>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col" class="w-50">Titre</th>
+                            <th scope="col">Type</th>
+                            <th scope="col" class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for document in documents %}
+                        <tr>
+                            <td>
+                                <i class="bi bi-file-earmark me-2 text-primary"></i>
+                                {{ document.fichier }}
+                            </td>
+                            <td>
+                                <span class="badge bg-light text-dark">
+                                    <i class="bi bi-calendar3 me-1"></i>
+                                    {{ document.type }}
+                                </span>
+                            </td>
+                            <td class="text-end">
+                                <a href="{{ document.fichier.url }}" class="btn btn-primary btn-sm" target="_blank">
+                                    <i class="bi bi-download me-1"></i>
+                                    Télécharger
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-center py-4">
+                                <div class="alert alert-info mb-0">
+                                    <i class="bi bi-info-circle me-2"></i>
+                                    Aucun document disponible
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

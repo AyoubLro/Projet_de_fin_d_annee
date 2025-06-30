@@ -1,0 +1,51 @@
+{% extends "adminclub/base_admin.html" %}
+{% block title %}Tableau de Bord Admin - SportClub{% endblock %}
+{% block content %}
+<h2 class="mb-4">Tableau de Bord</h2>
+<!-- Stats Cards -->
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <h5 class="card-title">Total Membres</h5>
+                <p class="card-text display-4">{{ total_membres }}</p>
+                <!-- <a href="#" class="btn btn-light">Voir les membres</a> -->
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h5 class="card-title">Total Coachs</h5>
+                <p class="card-text display-4">{{ total_coachs }}</p>
+                <a href="{% url 'admin_coachs' %}" class="btn btn-light">Gérer les coachs</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-primary text-white mb-4">
+            <div class="card-body">
+                <h5 class="card-title">evenement d'aujourd'hui</h5>
+                <h2 class="card-text">{{ matchs_aujourdhui }}</h2>
+            </div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a class="small text-white stretched-link" href="{% url 'admin_evenements' %}">Voir les evenements</a>
+                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-success text-white mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Factures des Réservations</h5>
+                <h2 class="card-text">{{ total_factures }}</h2>
+                <h2 class="card-text">Gérer</h2>
+            </div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a class="small text-white stretched-link" href="{% url 'admin_factures_reservations' %}">Voir les factures</a>
+                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

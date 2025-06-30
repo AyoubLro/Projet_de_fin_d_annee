@@ -1,0 +1,82 @@
+{% extends "coach/base_coach.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4" style="color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 8px;">Liste des réservations par jour</h2>
+    
+    {% for jour, reservations in reservations_groupes %}
+        <div style="margin-bottom: 2rem; padding: 1rem; background-color: #f8f9fa; border-radius: 5px;">
+            <h4 style="color: #343a40; margin-bottom: 1rem;">
+                {{ jour }} — <span style="background-color: #3498db; color: white; padding: 3px 8px; border-radius: 10px; font-size: 0.9em;">
+                    {{ reservations|length }} réservation{{ reservations|length|pluralize }}
+                </span>
+            </h4>
+            
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead style="background-color: #e9ecef;">
+                        <tr>
+                            <th style="padding: 12px; text-align: left;">Membre</th>
+                            <th style="padding: 12px; text-align: left;">Date début</th>
+                            <th style="padding: 12px; text-align: left;">Date fin</th>
+                            <th style="padding: 12px; text-align: left;">Type</th>
+                            <th style="padding: 12px; text-align: left;">Validée</th>
+                            <th style="padding: 12px; text-align: left;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reservation in reservations %}
+                            {% if reservation.type != 'match' %}
+                            <tr style="border-bottom: 1px solid #eee;">
+                                <td style="padding: 12px;">{{ reservation.membre.nom }} {{ reservation.membre.prenom }}</td>
+                                <td style="padding: 12px;">{{ reservation.date_debut }}</td>
+                                <td style="padding: 12px;">{{ reservation.date_fin }}</td>
+                                <td style="padding: 12px;">
+                                    <span style="background-color: #17a2b8; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.85em;">
+                                        {{ reservation.type }}
+                                    </span>
+                                </td>
+                                <td style="padding: 12px;">
+                                    {% if reservation.validee %}
+                                        <span style="background-color: #28a745; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.85em;">Oui</span>
+                                    {% else %}
+                                        <span style="background-color: #ffc107; color: #212529; padding: 2px 6px; border-radius: 4px; font-size: 0.85em;">Non</span>
+                                    {% endif %}
+                                </td>
+                                <td style="padding: 12px;">
+                                    {% if not reservation.validee and not reservation.annulee %}
+                                        <a href="{% url 'valider_reservation' reservation.id %}" style="background-color: #28a745; color: white; border: none; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-size: 0.85em; margin-right: 5px;">Valider</a>
+                                        <a href="{% url 'annuler_reservation' reservation.id %}" style="background-color: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-size: 0.85em; margin-right: 5px;">Annuler</a>
+                                    {% endif %}
+                                    <a href="{% url 'modifier_reservation' reservation.id %}" style="background-color: #ffc107; color: #212529; border: none; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-size: 0.85em; margin-right: 5px;">Modifier</a>
+                                    <a href="{% url 'supprimer_reservation' reservation.id %}" style="background-color: transparent; color: #6c757d; border: 1px solid #6c757d; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-size: 0.85em;" onclick="return confirm('Supprimer cette réservation ?');">Supprimer</a>
+                                </td>
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            
+                
+                    <div style="margin-top: 1.5rem;">
+                        <h5 style="color: #6c757d; margin-bottom: 0.8rem;">Matchs ce jour-là :</h5>
+                        <ul style="list-style-type: none; padding-left: 0;">
+                            {% for reservation in matches %}
+                                <li style="padding: 10px 15px; background-color: #e9ecef; border-radius: 4px; margin-bottom: 5px;">
+                                    {{ reservation.membre.nom }} {{ reservation.membre.prenom }} ({{ reservation.date_debut }} - {{ reservation.date_fin }})
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                
+            
+        </div>
+    {% empty %}
+        <div style="padding: 15px; background-color: #d1ecf1; color: #0c5460; border-radius: 4px;">
+            Aucune réservation trouvée.
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

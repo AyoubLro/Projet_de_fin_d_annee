@@ -1,0 +1,25 @@
+{% extends 'user/base_membre.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Rattrapage de réservation</h2>
+    <p>Vous effectuez un rattrapage pour la réservation annulée du {{ reservation_orig.date_debut }}.</p>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="date_debut" class="form-label">Nouvelle date et heure de début</label>
+            <input type="datetime-local" class="form-control" id="date_debut" name="date_debut" required>
+        </div>
+        <div class="mb-3">
+            <label for="date_fin" class="form-label">Nouvelle date et heure de fin</label>
+            <input type="datetime-local" class="form-control" id="date_fin" name="date_fin" required>
+        </div>
+        <button type="submit" class="btn btn-success">Valider le rattrapage</button>
+        <a href="{% url 'liste_terrains' %}" class="btn btn-secondary ms-2">Annuler</a>
+    </form>
+</div>
+{% endblock %}

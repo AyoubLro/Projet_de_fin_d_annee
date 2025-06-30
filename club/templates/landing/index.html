@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SportClub - Rejoignez l'aventure</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #e74c3c;
+            --light-color: #ecf0f1;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?ixlib=rb-4.0.3');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 120px 0;
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary-color);
+            border: none;
+            padding: 10px 25px;
+        }
+        
+        .btn-primary:hover {
+            background-color: #c0392b;
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .testimonial-card {
+            background-color: var(--light-color);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .pricing-card {
+            border: none;
+            border-radius: 15px;
+            transition: transform 0.3s;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .pricing-header {
+            background-color: var(--primary-color);
+            color: white;
+            border-top-left-radius: 15px !important;
+            border-top-right-radius: 15px !important;
+        }
+        
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-running me-2"></i>SportClub
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#activites">Activités</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="#tarifs">Tarifs</a>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                </ul>
+                <a href="{% url 'inscription' %}" class="btn btn-primary ms-lg-3">Inscription</a>
+                <a href="/adminclub/login/" class="btn btn-danger ms-lg-2">Admin</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-3 fw-bold mb-4">Dépassement, Équipe, Victoire</h1>
+            <p class="lead mb-5">Rejoignez notre communauté sportive et dépassez vos limites</p>
+            <a href="#inscription" class="btn btn-primary btn-lg me-2">S'inscrire</a>
+            <a href="#activites" class="btn btn-outline-light btn-lg">Nos activités</a>
+            <div class="mt-4">
+                <a href="/coach/login/" class="btn btn-warning btn-lg">Connexion Coach</a>
+                <a href="/adminclub/login/" class="btn btn-danger btn-lg ms-2">Connexion Admin</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="activites" class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Nos Activités Sportives</h2>
+                <p class="lead text-muted">Découvrez nos disciplines et trouvez celle qui vous correspond</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="text-center p-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-futbol"></i>
+                        </div>
+                        <h3>Football</h3>
+                        <p>Entraînements hebdomadaires et matches amicaux pour tous les niveaux.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="text-center p-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-basketball-ball"></i>
+                        </div>
+                        <h3>Basketball</h3>
+                        <p>Développez vos compétences avec nos coachs professionnels.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="text-center p-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-table-tennis"></i>
+                        </div>
+                        <h3>Tennis</h3>
+                        <p>Cours particuliers et en groupe pour juniors et adultes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Témoignages</h2>
+                <p class="lead text-muted">Ce que nos membres disent de nous</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="mb-3">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                        </div>
+                        <p class="mb-3">"Le meilleur club de la région ! Les entraîneurs sont compétents et l'ambiance est super."</p>
+                        <h5 class="mb-0">- Jean D.</h5>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="mb-3">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                        </div>
+                        <p class="mb-3">"Mon fils a progressé rapidement grâce aux entraînements structurés."</p>
+                        <h5 class="mb-0">- Marie L.</h5>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="mb-3">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star-half-alt text-warning"></i>
+                        </div>
+                        <p class="mb-3">"Excellente infrastructure et organisation. Je recommande !"</p>
+                        <h5 class="mb-0">- Thomas P.</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <!-- <section id="tarifs" class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Nos Tarifs</h2>
+                <p class="lead text-muted">Choisissez la formule qui vous convient</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card pricing-card h-100">
+                        <div class="card-header pricing-header text-center py-3">
+                            <h3>Découverte</h3>
+                        </div>
+                        <div class="card-body text-center py-4">
+                            <h4 class="card-title">25€<small class="text-muted">/mois</small></h4>
+                            <ul class="list-unstyled mt-3 mb-4">
+                                <li>1 activité au choix</li>
+                                <li>2 séances par semaine</li>
+                                <li>Accès limité aux équipements</li>
+                            </ul>
+                            <button class="btn btn-outline-primary">Choisir</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card pricing-card h-100">
+                        <div class="card-header pricing-header text-center py-3">
+                            <h3>Passion</h3>
+                        </div>
+                        <div class="card-body text-center py-4">
+                            <h4 class="card-title">40€<small class="text-muted">/mois</small></h4>
+                            <ul class="list-unstyled mt-3 mb-4">
+                                <li>2 activités au choix</li>
+                                <li>Accès illimité aux séances</li>
+                                <li>Accès complet aux équipements</li>
+                            </ul>
+                            <button class="btn btn-primary">Choisir</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card pricing-card h-100">
+                        <div class="card-header pricing-header text-center py-3">
+                            <h3>Famille</h3>
+                        </div>
+                        <div class="card-body text-center py-4">
+                            <h4 class="card-title">65€<small class="text-muted">/mois</small></h4>
+                            <ul class="list-unstyled mt-3 mb-4">
+                                <li>Jusqu'à 3 personnes</li>
+                                <li>Activités illimitées</li>
+                                <li>Avantages exclusifs</li>
+                            </ul>
+                            <button class="btn btn-outline-primary">Choisir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+    <!-- CTA Section -->
+    <section id="inscription" class="py-5 bg-primary text-white">
+        <div class="container text-center">
+            <h2 class="fw-bold mb-4">Prêt à nous rejoindre ?</h2>
+            <p class="lead mb-5">Inscrivez-vous dès maintenant et bénéficiez d'une séance d'essai gratuite !</p>
+            <button class="btn btn-light btn-lg">S'inscrire maintenant</button>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h2 class="fw-bold mb-4">Contactez-nous</h2>
+                    <p class="lead">Des questions ? Notre équipe est là pour vous aider.</p>
+                    
+                    <ul class="list-unstyled mt-4">
+                        <li class="mb-3">
+                            <i class="fas fa-map-marker-alt me-2 text-primary"></i>
+                            sidi maarouf
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-phone me-2 text-primary"></i>
+                            06 06 87 30 74 
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-envelope me-2 text-primary"></i>
+                            contact@sportclub.fr
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-6">
+                    <form>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" placeholder="Votre nom">
+                        </div>
+                        <div class="mb-3">
+                            <input type="email" class="form-control" placeholder="Votre email">
+                        </div>
+                        <div class="mb-3">
+                            <textarea class="form-control" rows="4" placeholder="Votre message"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Envoyer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0">EMSI ETUDIANT.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-white"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

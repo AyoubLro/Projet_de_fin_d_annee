@@ -1,0 +1,185 @@
+{% extends 'adminclub/base_admin.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Gestion des Terrains</h2>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ajouterTerrainModal">
+            <i class="fas fa-plus"></i> Ajouter un terrain
+        </button>
+    </div>
+
+    <!-- Modal d'ajout de terrain -->
+    <div class="modal fade" id="ajouterTerrainModal" tabindex="-1" aria-labelledby="ajouterTerrainModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ajouterTerrainModalLabel">Ajouter un nouveau terrain</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action="{% url 'ajouter_terrain' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="nom" class="form-label">Nom du terrain</label>
+                            <input type="text" class="form-control" id="nom" name="nom" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="prix" class="form-label">Prix (DH)</label>
+                            <input type="number" class="form-control" id="prix" name="prix" step="0.01" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Image du terrain</label>
+                            <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="disponibilite" class="form-label">Disponibilité</label>
+                            <select class="form-select" id="disponibilite" name="disponibilite">
+                                <option value="True">Disponible</option>
+                                <option value="False">Non disponible</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-primary">Ajouter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Liste des terrains -->
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Nom</th>
+                            <th>Prix</th>
+                            <th>Disponibilité</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for terrain in terrains %}
+                        <tr>
+                            <td>
+                                {% if terrain.image %}
+                                    <img src="{{ terrain.image.url }}" alt="{{ terrain.nom }}" style="width: 100px; height: 100px; object-fit: cover;">
+                                {% else %}
+                                    <span>Aucune image</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ terrain.nom }}</td>
+                            <td>{{ terrain.prix }} DH</td>
+                            <td>
+                                {% if terrain.disponibilite %}
+                                    <span class="badge bg-success">Disponible</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Non disponible</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modifierTerrainModal{{ terrain.id }}">
+                                    <i class="fas fa-edit"></i> Modifier
+                                </button>
+                                <a href="{% url 'supprimer_terrain' terrain.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce terrain ?')">
+                                    <i class="fas fa-trash"></i> Supprimer
+                                </a>
+                            </td>
+                        </tr>
+
+                        <!-- Modal de modification pour chaque terrain -->
+                        <div class="modal fade" id="modifierTerrainModal{{ terrain.id }}" tabindex="-1" aria-labelledby="modifierTerrainModalLabel{{ terrain.id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modifierTerrainModalLabel{{ terrain.id }}">Modifier le terrain</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form method="POST" action="{% url 'modifier_terrain' terrain.id %}" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label for="nom{{ terrain.id }}" class="form-label">Nom du terrain</label>
+                                                <input type="text" class="form-control" id="nom{{ terrain.id }}" name="nom" value="{{ terrain.nom }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="prix{{ terrain.id }}" class="form-label">Prix (DH)</label>
+                                                <input type="number" class="form-control" id="prix{{ terrain.id }}" name="prix" value="{{ terrain.prix }}" step="0.01" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="image{{ terrain.id }}" class="form-label">Image du terrain</label>
+                                                {% if terrain.image %}
+                                                    <div class="mb-2">
+                                                        <img src="{{ terrain.image.url }}" alt="Image actuelle" style="width: 100px; height: 100px; object-fit: cover;">
+                                                    </div>
+                                                {% endif %}
+                                                <input type="file" class="form-control" id="image{{ terrain.id }}" name="image" accept="image/*">
+                                                <small class="text-muted">Laissez vide pour conserver l'image actuelle</small>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="disponibilite{{ terrain.id }}" class="form-label">Disponibilité</label>
+                                                <select class="form-select" id="disponibilite{{ terrain.id }}" name="disponibilite">
+                                                    <option value="True" {% if terrain.disponibilite %}selected{% endif %}>Disponible</option>
+                                                    <option value="False" {% if not terrain.disponibilite %}selected{% endif %}>Non disponible</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                            <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center">Aucun terrain disponible</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Messages d'erreur et de succès -->
+{% if messages %}
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    {% for message in messages %}
+    <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header {% if message.tags == 'success' %}bg-success text-white{% elif message.tags == 'error' %}bg-danger text-white{% endif %}">
+            <strong class="me-auto">Notification</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            {{ message }}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Fermer automatiquement les toasts après 5 secondes
+    document.addEventListener('DOMContentLoaded', function() {
+        var toasts = document.querySelectorAll('.toast');
+        toasts.forEach(function(toast) {
+            setTimeout(function() {
+                var bsToast = new bootstrap.Toast(toast);
+                bsToast.hide();
+            }, 5000);
+        });
+    });
+</script>
+{% endblock %}

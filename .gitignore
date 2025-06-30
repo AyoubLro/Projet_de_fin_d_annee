@@ -1,0 +1,12 @@
+# Ignorer les environnements virtuels
+env/
+club/env/
+Lib/
+Scripts/
+__pycache__/
+*.pyc
+
+# Ignorer la base de données
+club/db.sqlite3
+
+# Ne PAS ignorer le dossier club/ complet ni requirements.txt ni .gitignore !

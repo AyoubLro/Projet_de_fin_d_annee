@@ -1,0 +1,29 @@
+{% extends 'adminclub/base_admin.html' %}
+{% block content %}
+<h1>Modifier le terrain</h1>
+<form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="nom">Nom</label>
+        <input type="text" class="form-control" id="nom" name="nom" value="{{ terrain.nom }}">
+    </div>
+    <div class="form-group">
+        <label for="image">Image</label>
+        {% if terrain.image %}
+            <img src="{{ terrain.image.url }}" alt="Image du terrain" style="width: 100px; height: 100px;">
+        {% else %}
+            <p>Aucune image disponible</p>
+        {% endif %}
+        <input type="file" class="form-control" id="image" name="image">
+    </div>
+    <div class="form-group">
+        <label for="disponibilite">Disponibilité</label>
+        <input type="text" class="form-control" id="disponibilite" name="disponibilite" value="{{ terrain.disponibilite }}">
+    </div>
+    <div class="form-group">
+        <label for="prix">Prix</label>
+        <input type="text" class="form-control" id="prix" name="prix" value="{{ terrain.prix }}">
+    </div>
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+</form>
+{% endblock %}

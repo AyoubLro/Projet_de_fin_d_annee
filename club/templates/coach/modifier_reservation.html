@@ -1,0 +1,50 @@
+{% extends 'coach/base_coach.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="ajout-container">
+        <div class="ajout-header">
+            <i class="fas fa-calendar-edit"></i>
+            <h2>Modifier la réservation</h2>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="mb-3">
+                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ field.errors|first }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-warning w-100">Enregistrer</button>
+            <a href="{% url 'liste_reservations' %}" class="btn btn-secondary w-100 mt-2">Annuler</a>
+        </form>
+    </div>
+</div>
+<style>
+    .ajout-container {
+        background-color: rgba(255, 255, 255, 0.95);
+        padding: 2rem 2.5rem;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        max-width: 450px;
+    }
+    .ajout-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    .ajout-header i {
+        font-size: 2.5rem;
+        color: #ffc107;
+        margin-bottom: 0.5rem;
+    }
+    .form-control {
+        margin-bottom: 1rem;
+    }
+</style>
+{% endblock %}
